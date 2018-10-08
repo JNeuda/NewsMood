@@ -1,15 +1,26 @@
 
+# News Mood
 
-```python
-# Observable Trends #1
-#   Tweet Polarity based off recent events. Fluctuates everyday.
+In this assignment, you'll create a Python script to perform a sentiment analysis of the Twitter activity of various news oulets, and to present your findings visually.
 
-# Observable Trends #2
-#   Based off the current data, it seems CBS is tweeting a more positive tweets and steering clear of what CNN, FOX, and NYT is reporting.
+Your final output should provide a visualized summary of the sentiments expressed in Tweets sent out by the following news organizations: BBC, CBS, CNN, Fox, and New York times.
 
-# Observable Trends #3
-#   CNN and NYT tweeting could be tweeting similar stories/tweets as their tweet polarity is similar.
-```
+The first plot will be and/or feature the following:
+
+Be a scatter plot of sentiments of the last 100 tweets sent out by each news organization, ranging from -1.0 to 1.0, where a score of 0 expresses a neutral sentiment, -1 the most negative sentiment possible, and +1 the most positive sentiment possible.
+Each plot point will reflect the compound sentiment of a tweet.
+Sort each plot point by its relative timestamp.
+The second plot will be a bar plot visualizing the overall sentiments of the last 100 tweets from each organization. For this plot, you will again aggregate the compound sentiments analyzed by VADER.
+
+The tools of the trade you will need for your task as a data analyst include the following: tweepy, pandas, matplotlib, seaborn, textblob, and VADER.
+
+Your final Jupyter notebook must:
+
+Pull last 100 tweets from each outlet.
+Perform a sentiment analysis with the compound, positive, neutral, and negative scoring for each tweet.
+Pull into a DataFrame the tweet's source acount, its text, its date, and its compound, positive, neutral, and negative sentiment scores.
+Export the data in the DataFrame into a CSV file.
+Save PNG images for each plot.
 
 
 ```python
@@ -19,6 +30,7 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 from config import consumer_key, consumer_secret, access_token, access_token_secret
 
 # Import and Initialize Sentiment Analyzer
@@ -168,53 +180,53 @@ news_df
   <tbody>
     <tr>
       <th>@BBC</th>
-      <td>[0.4404, -0.4215, 0.0, 0.4588, 0.7351, 0.4404,...</td>
-      <td>[0.861, 0.811, 1.0, 0.812, 0.744, 0.896, 0.909...</td>
-      <td>[0.0, 0.189, 0.0, 0.0, 0.0, 0.0, 0.091, 0.0, 0...</td>
+      <td>[-0.7579, 0.0, 0.0, 0.0772, -0.5829, 0.0, 0.0,...</td>
+      <td>[0.667, 1.0, 1.0, 0.599, 0.79, 1.0, 1.0, 1.0, ...</td>
+      <td>[0.333, 0.0, 0.0, 0.162, 0.21, 0.0, 0.0, 0.0, ...</td>
       <td>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14...</td>
-      <td>[0.139, 0.0, 0.0, 0.188, 0.256, 0.104, 0.0, 0....</td>
+      <td>[0.0, 0.0, 0.0, 0.24, 0.0, 0.0, 0.0, 0.0, 0.17...</td>
       <td>100</td>
-      <td>[Can a change in home environment and parental...</td>
+      <td>[Film-maker @RogerRossWill examines the Americ...</td>
     </tr>
     <tr>
       <th>@CBS</th>
-      <td>[0.4389, 0.8442, 0.0, 0.296, 0.6809, 0.5574, 0...</td>
-      <td>[0.855, 0.676, 1.0, 0.891, 0.449, 0.805, 1.0, ...</td>
-      <td>[0.0, 0.0, 0.0, 0.0, 0.213, 0.0, 0.0, 0.0, 0.0...</td>
+      <td>[0.6696, 0.3612, 0.0772, 0.5423, -0.3612, 0.0,...</td>
+      <td>[0.817, 0.902, 0.936, 0.8, 0.821, 1.0, 0.811, ...</td>
+      <td>[0.0, 0.0, 0.0, 0.0, 0.179, 0.0, 0.189, 0.0, 0...</td>
       <td>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14...</td>
-      <td>[0.145, 0.324, 0.0, 0.109, 0.338, 0.195, 0.0, ...</td>
+      <td>[0.183, 0.098, 0.064, 0.2, 0.0, 0.0, 0.0, 0.17...</td>
       <td>100</td>
-      <td>[Comedian, actor, and global superstar @KevinH...</td>
+      <td>[RT @WorldsBestCBS: It’s the world’s best news...</td>
     </tr>
     <tr>
       <th>@CNN</th>
-      <td>[0.0, 0.0, -0.8126, 0.1695, 0.0, 0.0, 0.4767, ...</td>
-      <td>[1.0, 1.0, 0.641, 0.926, 1.0, 1.0, 0.773, 1.0,...</td>
-      <td>[0.0, 0.0, 0.359, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1...</td>
+      <td>[0.0, 0.399, -0.8834, 0.0, -0.8834, -0.0516, -...</td>
+      <td>[1.0, 0.856, 0.636, 1.0, 0.593, 0.789, 0.729, ...</td>
+      <td>[0.0, 0.0, 0.364, 0.0, 0.407, 0.109, 0.16, 0.1...</td>
       <td>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14...</td>
-      <td>[0.0, 0.0, 0.0, 0.074, 0.0, 0.0, 0.227, 0.0, 0...</td>
+      <td>[0.0, 0.144, 0.0, 0.0, 0.0, 0.102, 0.111, 0.11...</td>
       <td>100</td>
-      <td>[Mark Zuckerberg made $3 billion while he sat ...</td>
+      <td>[Netflix is buying its first production studio...</td>
     </tr>
     <tr>
       <th>@FoxNews</th>
-      <td>[0.2023, 0.0, 0.0, 0.0, 0.4939, -0.2732, 0.0, ...</td>
-      <td>[0.87, 1.0, 1.0, 1.0, 0.714, 0.896, 1.0, 0.781...</td>
-      <td>[0.0, 0.0, 0.0, 0.0, 0.0, 0.104, 0.0, 0.0, 0.1...</td>
+      <td>[0.296, -0.4585, 0.2023, 0.0, 0.6369, -0.296, ...</td>
+      <td>[0.658, 0.7, 0.87, 1.0, 0.743, 0.845, 1.0, 0.7...</td>
+      <td>[0.132, 0.3, 0.0, 0.0, 0.0, 0.155, 0.0, 0.211,...</td>
       <td>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14...</td>
-      <td>[0.13, 0.0, 0.0, 0.0, 0.286, 0.0, 0.0, 0.219, ...</td>
+      <td>[0.211, 0.0, 0.13, 0.0, 0.257, 0.0, 0.0, 0.0, ...</td>
       <td>100</td>
-      <td>[Trump directs top economic advisers to negoti...</td>
+      <td>[Oklahoma girl, 4, electrocuted trying to save...</td>
     </tr>
     <tr>
       <th>@nytimes</th>
-      <td>[0.0772, -0.4767, 0.128, 0.2732, 0.0, 0.0, -0....</td>
-      <td>[0.766, 0.664, 0.923, 0.884, 1.0, 1.0, 0.882, ...</td>
-      <td>[0.11, 0.244, 0.0, 0.0, 0.0, 0.0, 0.118, 0.134...</td>
+      <td>[-0.296, 0.296, -0.25, 0.0, 0.4939, 0.0, -0.15...</td>
+      <td>[0.909, 0.905, 0.776, 1.0, 0.862, 1.0, 0.766, ...</td>
+      <td>[0.091, 0.0, 0.134, 0.0, 0.0, 0.0, 0.128, 0.0,...</td>
       <td>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14...</td>
-      <td>[0.124, 0.092, 0.077, 0.116, 0.0, 0.0, 0.0, 0....</td>
+      <td>[0.0, 0.095, 0.091, 0.0, 0.138, 0.0, 0.106, 0....</td>
       <td>100</td>
-      <td>[In Opinion\n\nOp-Ed Contributor Christopher B...</td>
+      <td>[The youngest child to come before the bench i...</td>
     </tr>
   </tbody>
 </table>
@@ -258,7 +270,7 @@ plt.show()
 ```
 
 
-![png](output_6_0.png)
+![png](output_7_0.png)
 
 
 
@@ -292,18 +304,17 @@ media_names = ["BBC", "CBS", "CNN", "FOX", "NYT"]
 
 ```python
 fig, ax  = plt.subplots(figsize =(13,10))
+#sns.set_style("darkgrid")
+#ax.grid(True)
 
-sns.set_style("dark")
-ax.grid(False)
-
-plt.ylim(-.1,.4)
-#plt.xlim(105,-5)
+plt.ylim(-.1,.15)
 
 plt.xticks(fontsize=15)
 plt.yticks(fontsize=15)
 
 plt.ylabel("Tweet Polarity", fontsize=20)
-plt.title("Overall Media Sentiment based on Twitter (04/06/18)", fontsize=20)
+plt.xlabel("Media Outlets", fontsize=20)
+plt.title("Overall Media Sentiment based on Twitter (10/08/18)", fontsize=20)
 
 y = plt.bar(media_names, y_cities, color=colors, align="center", width=1)
 
@@ -314,5 +325,5 @@ plt.show()
 ```
 
 
-![png](output_8_0.png)
+![png](output_9_0.png)
 
